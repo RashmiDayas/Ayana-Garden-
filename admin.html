@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ayana Garden Admin</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-10">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-navy mb-6">Booking Requests</h1>
+        
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-navy text-white">
+                    <tr>
+                        <th class="p-4">Date</th>
+                        <th class="p-4">Name</th>
+                        <th class="p-4">Room</th>
+                        <th class="p-4">Check In/Out</th>
+                        <th class="p-4">Contact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if bookings %}
+                        {% for booking in bookings %}
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="p-4 text-sm">{{ booking.created_at.strftime('%Y-%m-%d') }}</td>
+                            <td class="p-4 font-bold">{{ booking.name }}</td>
+                            <td class="p-4 text-gold">{{ booking.room_type }}</td>
+                            <td class="p-4 text-sm">
+                                In: {{ booking.check_in }}<br>
+                                Out: {{ booking.check_out }}<br>
+                                Guests: {{ booking.guests }}
+                            </td>
+                            <td class="p-4 text-sm">
+                                {{ booking.email }}<br>
+                                {{ booking.phone }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="p-4 text-center text-gray-500">No bookings found.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-6 text-center">
+            <a href="/" class="text-navy underline">Back to Website</a>
+        </div>
+    </div>
+</body>
+</html>
