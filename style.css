@@ -1,0 +1,21 @@
+/* Custom Scrollbar Hide */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Date Picker Styling */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            opacity: 0.6;
+            filter: invert(0.3);
+        }
+        
+        /* Smooth selection highlight */
+        ::selection {
+            background: #d4af37;
+            color: #ffffff;
+        }
+
+        /* Carousel Transitions */
+        .carousel-track {
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }

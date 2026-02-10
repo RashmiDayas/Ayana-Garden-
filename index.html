@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayana Garden Bungalow | Slow Travel Retreat Ella</title>
+    
+    <!-- Fonts: Playfair Display (Headings), Montserrat (Body), Poppins (Extras) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (via CDN for easy standalone usage) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#0a192f',
+                        gold: '#d4af37',
+                        softWhite: '#f6f6f6',
+                        whatsapp: '#25D366',
+                        emerald: '#046c4e',
+                    },
+                    fontFamily: {
+                        westiva: ['Westiva', 'Playfair Display', 'serif'],
+                        heading: ['Playfair Display', 'serif'],
+                        body: ['Montserrat', 'sans-serif'],
+                        extra: ['Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Firebase SDKs (Compat version for easy global use) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <!-- Local stylesheet -->
+    <link rel="stylesheet" href="/web-site/static/style.css">
+</head>
+<body class="bg-softWhite text-gray-900 antialiased font-body">
+
+    <!-- NAVIGATION -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-500 px-[5%] py-5 flex justify-between items-center bg-gradient-to-b from-black/60 to-transparent">
+        <a href="#" class="flex items-center gap-4 group">
+            <div class="relative">
+                <div class="absolute inset-0 bg-gold rounded-full blur opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
+            </div>
+                <img src="/images/ayana garden ella logo png.png" 
+                     class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-gold shadow-lg object-cover relative z-10 transform group-hover:scale-105 transition-transform duration-300" 
+                     alt="Ayana Logo"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="hidden w-12 h-12 rounded-full border-2 border-gold bg-navy items-center justify-center shadow-lg relative z-10">
+                    <i data-lucide="mountain" class="w-6 h-6 text-gold"></i>
+                </div>
+            </div>
+            <span class="font-westiva text-white text-lg md:text-2xl font-bold tracking-wider leading-none">Ayana Garden Bungalow</span>
+        </a>
+        
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex gap-6 items-center">
+            <a href="#about" class="text-white text-[0.8rem] font-extra uppercase tracking-widest hover:text-gold transition-colors font-medium">The Vibe</a>
+            <a href="#rooms" class="text-white text-[0.8rem] font-extra uppercase tracking-widest hover:text-gold transition-colors font-medium">Rooms</a>
+            <a href="#experiences" class="text-white text-[0.8rem] font-extra uppercase tracking-widest hover:text-gold transition-colors font-medium">Experiences</a>
+            <a href="#gallery" class="text-white text-[0.8rem] font-extra uppercase tracking-widest hover:text-gold transition-colors font-medium">Gallery</a>
+            <a href="#reviews" class="text-white text-[0.8rem] font-extra uppercase tracking-widest hover:text-gold transition-colors font-medium">Reviews</a>
+            <a href="#location" class="text-white text-[0.8rem] font-extra uppercase tracking-widest hover:text-gold transition-colors font-medium">Location</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <!-- Hamburger Button (Mobile) -->
+            <button id="hamburger" class="md:hidden flex flex-col gap-1.5 text-white hover:text-gold transition-colors z-50">
+                <span class="w-6 h-0.5 bg-current block transition-all"></span>
+                <span class="w-6 h-0.5 bg-current block transition-all"></span>
+                <span class="w-6 h-0.5 bg-current block transition-all"></span>
+            </button>
+
+            <a href="https://wa.me/94717075724?text=Hi%20Ayana%20Garden,%20I%20would%20like%20to%20check%20availability" 
+               class="hidden md:block bg-gold text-navy px-6 py-2.5 rounded-full font-extra font-semibold text-[0.75rem] md:text-[0.8rem] uppercase tracking-tight hover:bg-white transition-all shadow-md">
+                Check Availability
+            </a>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden fixed top-20 left-0 right-0 bg-navy/95 backdrop-blur z-40 md:hidden transition-all">
+        <div class="flex flex-col px-[5%] py-6 gap-4">
+            <a href="#about" class="text-white text-sm font-extra uppercase tracking-widest hover:text-gold transition-colors font-medium py-2 border-b border-white/10">The Vibe</a>
+            <a href="#rooms" class="text-white text-sm font-extra uppercase tracking-widest hover:text-gold transition-colors font-medium py-2 border-b border-white/10">Rooms</a>
+            <a href="#experiences" class="text-white text-sm font-extra uppercase tracking-widest hover:text-gold transition-colors font-medium py-2 border-b border-white/10">Experiences</a>
+            <a href="#gallery" class="text-white text-sm font-extra uppercase tracking-widest hover:text-gold transition-colors font-medium py-2 border-b border-white/10">Gallery</a>
+            <a href="#reviews" class="text-white text-sm font-extra uppercase tracking-widest hover:text-gold transition-colors font-medium py-2 border-b border-white/10">Reviews</a>
+            <a href="#location" class="text-white text-sm font-extra uppercase tracking-widest hover:text-gold transition-colors font-medium py-2 border-b border-white/10">Location</a>
+            <a href="https://wa.me/94717075724?text=Hi%20Ayana%20Garden,%20I%20would%20like%20to%20check%20availability" 
+               class="bg-gold text-navy px-6 py-2.5 rounded-full font-extra font-semibold text-xs uppercase tracking-tight hover:bg-white transition-all shadow-md text-center mt-4">
+                Check Availability
+            </a>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <header id="hero" class="relative h-screen w-full flex items-center justify-center text-center text-white overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <video id="heroVideo" autoplay muted loop playsinline class="w-full h-full object-cover opacity-60">
+                <source src="/videos/video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="absolute inset-0 bg-navy/30 z-0"></div>
+        
+        <!-- Audio Toggle Button -->
+        <button id="audioToggle" class="absolute top-32 right-8 z-20 bg-white/20 backdrop-blur hover:bg-white/40 text-white p-3 rounded-full transition-all shadow-lg group" title="Toggle Sound">
+        <i data-lucide="volume-x" class="w-6 h-6"></i> 
+    </button>
+        
+        <div class="relative z-10 px-6 max-w-4xl animate-fade-in">
+            <h1 class="font-heading text-5xl md:text-7xl mb-6 leading-tight font-bold">Slow Down. <br /> You Are in Kithalella.</h1>
+            <p class="font-body text-lg md:text-xl mb-10 font-light tracking-widest opacity-90">A private sanctuary for families, birdwatchers, and hikers on the Pekoe Trail.</p>
+            <a href="https://wa.me/94717075724?text=Hi%20Ayana%20Garden,%20I'd%20love%20to%20book%20a%20stay" 
+               class="inline-flex items-center gap-3 bg-gold text-navy px-10 py-4 rounded-full font-extra font-bold text-base uppercase tracking-widest hover:bg-white transition-all shadow-xl">
+                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.63 1.438h.004c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                Check Availability & Book Direct
+            </a>
+            <p class="mt-4 text-xs font-extra uppercase tracking-widest text-gray-300 opacity-80">Best Rates Guaranteed on WhatsApp</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- VIBE SECTION -->
+        <section id="about" class="py-20 px-[5%] md:px-[10%] bg-softWhite">
+            <div class="text-center mb-16 max-w-4xl mx-auto">
+                <span class="block font-extra text-sm text-gold uppercase tracking-[0.2em] mb-3 font-bold">The Concept</span>
+                <h2 class="font-heading text-4xl md:text-5xl text-navy font-semibold mb-6">The Art of Doing Nothing</h2>
+                <p class="font-body text-gray-600 leading-relaxed font-normal text-lg">
+                    Ella Town is for the crowd. Kithalella is for the soul. Located at an elevation of 1,041 meters, Ayana Garden is a transition zone where the mist meets the mountains. We are not just a place to sleep; we are a basecamp for "Slow Travel." Whether you are hiking Stage 16 of the Pekoe Trail, waiting for the iconic blue train, or simply sipping coffee while watching the mist roll over Ella Rock.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-10 rounded-xl text-center shadow-md hover:-translate-y-3 transition-transform duration-300">
+                    <div class="flex justify-center text-navy mb-6"><i data-lucide="book-open" class="w-10 h-10"></i></div>
+                    <h3 class="font-heading text-2xl mb-4 text-navy font-semibold">Read</h3>
+                    <p class="font-body text-gray-600 leading-relaxed font-normal">Curated reading nooks & mini-library for your quiet moments.</p>
+                </div>
+                <div class="bg-white p-10 rounded-xl text-center shadow-md hover:-translate-y-3 transition-transform duration-300">
+                    <div class="flex justify-center text-navy mb-6"><i data-lucide="binoculars" class="w-10 h-10"></i></div>
+                    <h3 class="font-heading text-2xl mb-4 text-navy font-semibold">Watch</h3>
+                    <p class="font-body text-gray-600 leading-relaxed font-normal">Home to 34 endemic bird species visiting our garden.</p>
+                </div>
+                <div class="bg-white p-10 rounded-xl text-center shadow-md hover:-translate-y-3 transition-transform duration-300">
+                    <div class="flex justify-center text-navy mb-6"><i data-lucide="wind" class="w-10 h-10"></i></div>
+                    <h3 class="font-heading text-2xl mb-4 text-navy font-semibold">Breathe</h3>
+                    <p class="font-body text-gray-600 leading-relaxed font-normal">Pure mountain air at 1,041 meters, away from the traffic.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROOMS SECTION -->
+        <section id="rooms" class="py-20 px-[5%] md:px-[10%] bg-white">
+            <div class="text-center mb-16">
+                <span class="block font-extra text-sm text-gold uppercase tracking-[0.2em] mb-3 font-bold">Accommodation</span>
+                <h2 class="font-heading text-4xl md:text-5xl text-navy font-semibold">Space to Breathe</h2>
+                <p class="mt-4 font-body text-gray-500 font-normal max-w-2xl mx-auto">Our two exclusive family suites are designed to bring the colors of Kithalella's forest inside. Each room features a private balcony, hot water, and a unique theme inspired by our resident birds.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Emerald Room Card -->
+                <article class="group rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 bg-white border border-gray-100 flex flex-col cursor-pointer" onclick="openModal('emerald')">
+                    <div class="h-72 overflow-hidden relative">
+                        <img src="/images/room1.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Emerald Suite">
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 text-xs font-extra font-bold uppercase tracking-widest text-navy rounded-sm">
+                            Family Suite
+                        </div>
+                    </div>
+                    <div class="p-8 flex-1 flex flex-col">
+                        <div class="flex items-center gap-3 mb-3">
+                            <i data-lucide="bird" class="w-6 h-6 text-emerald-700"></i>
+                            <h3 class="font-heading text-2xl font-semibold text-emerald-800">The Emerald Suite</h3>
+                        </div>
+                        <p class="font-body text-gray-500 font-normal text-sm leading-relaxed mb-4 flex-1">A vibrant, nature-immersive space featuring accents of deep forest green and crimson red. This suite captures the lively spirit of the Sri Lanka Hanging Parrot.</p>
+                        <div class="flex gap-4 text-sm font-body text-gray-600 mb-6">
+                            <span class="flex items-center gap-1"><i data-lucide="users" class="w-4 h-4"></i>4 Pax</span>
+                            <span class="flex items-center gap-1"><i data-lucide="mountain" class="w-4 h-4"></i>Mountain View</span>
+                            <span class="flex items-center gap-1"><i data-lucide="home" class="w-4 h-4"></i>Private Balcony</span>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-gray-100 pt-4 mt-auto">
+                            <div class="flex gap-3 text-gold"><i data-lucide="wifi" class="w-4 h-4"></i><i data-lucide="coffee" class="w-4 h-4"></i><i data-lucide="wind" class="w-4 h-4"></i></div>
+                            <button class="text-navy text-xs font-extra font-bold uppercase tracking-widest hover:text-gold transition-colors flex items-center gap-1 group-hover/btn:translate-x-1 duration-300">View Details <i data-lucide="chevron-right" class="w-3 h-3"></i></button>
+                        </div>
+                    </div>
+                    <!-- Hidden Data for Modal -->
+                    <div id="data-emerald" class="hidden">
+                        <span class="data-title">The Emerald Suite</span>
+                        <span class="data-price">Family Suite</span>
+                        <span class="data-desc">A vibrant, nature-immersive space featuring accents of deep forest green and crimson red. This suite captures the lively spirit of the Sri Lanka Hanging Parrot that visits our garden daily. Perfect for families who love energy and life.</span>
+                        <span class="data-img">/images/room1.jpg</span>
+                        <span class="data-gallery">[
+                            "/images/room1/1-GOPR1944.jpg",
+                            "/images/room1/2-GOPR1943.jpg",
+                            "/images/room1/3-GOPR1942.jpg",
+                            "/images/room1/4-GOPR1941.jpg",
+                            "/images/room1/5-GOPR1940.jpg",
+                            "/images/room1/6-GOPR1939.jpg",
+                            "/images/room1/7-GOPR1938.jpg",
+                            "/images/room1/8-GOPR1937.jpg",
+                            "/images/room1/9-GOPR1936.jpg",
+                            "/images/room1/10-GOPR1935.jpg",
+                            "/images/room1/11-GOPR1934.jpg",
+                            "/images/room1/12-GOPR1933.jpg",
+                            "/images/room1/1-GOPR1932.jpg",
+                            "/images/room1/2-GOPR1931.jpg",
+                            "/images/room1/3-GOPR1930.jpg",
+                            "/images/room1/4-GOPR1929.jpg",
+                            "/images/room1/5-GOPR1928.jpg",
+                            "/images/room1/6-GOPR1927.jpg",
+                            "/images/room1/7-GOPR1926.jpg",
+                            "/images/room1/8-GOPR1925.jpg",
+                            "/images/room1/9-GOPR1924.jpg",
+                        ]</span>
+                    </div>
+                </article>
+
+                <!-- Azure Room Card -->
+                <article class="group rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 bg-white border border-gray-100 flex flex-col cursor-pointer" onclick="openModal('azure')">
+                    <div class="h-72 overflow-hidden relative">
+                        <img src="/images/room2.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Azure Suite">
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 text-xs font-extra font-bold uppercase tracking-widest text-navy rounded-sm">
+                            Family Suite
+                        </div>
+                    </div>
+                    <div class="p-8 flex-1 flex flex-col">
+                        <div class="flex items-center gap-3 mb-3">
+                            <i data-lucide="bird" class="w-6 h-6 text-blue-700"></i>
+                            <h3 class="font-heading text-2xl font-semibold text-blue-800">The Azure Suite</h3>
+                        </div>
+                        <p class="font-body text-gray-500 font-normal text-sm leading-relaxed mb-4 flex-1">An elegant retreat designed with calming royal blues and warm chestnut earth tones. Inspired by the elusive Sri Lanka Blue Magpie.</p>
+                        <div class="flex gap-4 text-sm font-body text-gray-600 mb-6">
+                            <span class="flex items-center gap-1"><i data-lucide="users" class="w-4 h-4"></i>4 Pax</span>
+                            <span class="flex items-center gap-1"><i data-lucide="trees" class="w-4 h-4"></i>Forest View</span>
+                            <span class="flex items-center gap-1"><i data-lucide="home" class="w-4 h-4"></i>Private Balcony</span>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-gray-100 pt-4 mt-auto">
+                            <div class="flex gap-3 text-gold"><i data-lucide="wifi" class="w-4 h-4"></i><i data-lucide="coffee" class="w-4 h-4"></i><i data-lucide="wind" class="w-4 h-4"></i></div>
+                            <button class="text-navy text-xs font-extra font-bold uppercase tracking-widest hover:text-gold transition-colors flex items-center gap-1 group-hover/btn:translate-x-1 duration-300">View Details <i data-lucide="chevron-right" class="w-3 h-3"></i></button>
+                        </div>
+                    </div>
+                    <!-- Hidden Data for Modal -->
+                    <div id="data-azure" class="hidden">
+                        <span class="data-title">The Azure Suite</span>
+                        <span class="data-price">Family Suite</span>
+                        <span class="data-desc">An elegant retreat designed with calming royal blues and warm chestnut earth tones. Inspired by the elusive Sri Lanka Blue Magpie, this suite offers a sense of deep tranquility and sophistication.</span>
+                        <span class="data-img">/images/room%202/GOPR1945.JPG</span>
+                        <span class="data-gallery">[
+                            "/images/room%202/GOPR1945.JPG",
+                            "/images/room%202/GOPR1946.JPG",
+                            "/images/room%202/GOPR1947.JPG",
+                            "/images/room%202/GOPR1948.JPG",
+                            "/images/room%202/GOPR1949.JPG",
+                            "/images/room%202/GOPR1950.JPG",
+                            "/images/room%202/GOPR1951.JPG",
+                            "/images/room%202/GOPR1952.JPG",
+                            "/images/room%202/GOPR1953.JPG",
+                            "/images/room%202/GOPR1954.JPG",
+                            "/images/room%202/GOPR1955.JPG",
+                            "/images/room%202/GOPR1956.JPG",
+                            "/images/room%202/GOPR1957.JPG",
+                            "/images/room%202/GOPR1958.JPG",
+                            "/images/room%202/lr/GOPR1945.png",
+                            "/images/room%202/lr/GOPR1946.png",
+                            "/images/room%202/lr/GOPR1947.png",
+                            "/images/room%202/lr/GOPR1948.png",
+                            "/images/room%202/lr/GOPR1949.png",
+                            "/images/room%202/lr/GOPR1952.png",
+                            "/images/room%202/lr/GOPR1955.png",
+                            "/images/room%202/lr/GOPR1957.png",
+                            "/images/room%202/lr/GOPR1958.png"
+                        ]</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- EXPERIENCES SECTION -->
+        <section id="experiences" class="py-20 px-[5%] md:px-[10%] bg-softWhite">
+            <div class="text-center mb-16">
+                <span class="block font-extra text-sm text-gold uppercase tracking-[0.2em] mb-3 font-bold">Experiences</span>
+                <h2 class="font-heading text-4xl md:text-5xl text-navy font-semibold">More Than Just a View</h2>
+                <p class="font-body text-gray-600 text-lg mt-4 max-w-2xl mx-auto">Here is how you can slow down with us.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col md:flex-row gap-6 items-start">
+                    <div class="p-4 bg-navy/5 rounded-full shrink-0 text-gold"><i data-lucide="binoculars" class="w-8 h-8"></i></div>
+                    <div>
+                        <span class="font-extra text-xs text-gold font-bold uppercase tracking-widest mb-1 block">On-Site USP</span>
+                        <h3 class="font-heading text-2xl text-navy font-bold mb-3">A Birdwatcher’s Secret</h3>
+                        <p class="font-body text-gray-600 text-sm leading-relaxed mb-3">Kithalella is an ornithological bridge between the wet zone and the highlands. You don't need to go far to see the rarest birds; they come to our garden.</p>                        <p class="font-body text-navy text-xs font-semibold mb-2">The Ayana List: Home to the Sri Lanka Hanging Parrot, Grey Hornbill, and Yellow-fronted Barbet.</p>                        <p class="font-body text-navy text-xs font-semibold italic">Complimentary Binoculars & Bird Checklist available.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col md:flex-row gap-6 items-start">
+                    <div class="p-4 bg-navy/5 rounded-full shrink-0 text-gold"><i data-lucide="footprints" class="w-8 h-8"></i></div>
+                    <div>
+                        <span class="font-extra text-xs text-gold font-bold uppercase tracking-widest mb-1 block">Hiking</span>
+                        <h3 class="font-heading text-2xl text-navy font-bold mb-3">The Pekoe Trail - Stage 16</h3>
+                        <p class="font-body text-gray-600 text-sm leading-relaxed mb-3">We are located directly on the route. Hiking from Demodara to Ella? We offer a Free Hiker’s Pickup from the trail end to our bungalow.</p>
+                        <p class="font-body text-navy text-xs font-semibold italic">Perfect for hikers.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col md:flex-row gap-6 items-start">
+                    <div class="p-4 bg-navy/5 rounded-full shrink-0 text-gold"><i data-lucide="train" class="w-8 h-8"></i></div>
+                    <div>
+                        <span class="font-extra text-xs text-gold font-bold uppercase tracking-widest mb-1 block">Walking</span>
+                        <h3 class="font-heading text-2xl text-navy font-bold mb-3">The Railway Hike</h3>
+                        <p class="font-body text-gray-600 text-sm leading-relaxed mb-3">Just 500m to the quiet Kithalella Railway Station. Walk along the tracks to the famous Nine Arches Bridge (40-minute scenic walk) or sit at the station and watch the blue train pass by without the crowds.</p>
+                        <p class="font-body text-navy text-xs font-semibold italic">Scenic & Crowd-free.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col md:flex-row gap-6 items-start">
+                    <div class="p-4 bg-navy/5 rounded-full shrink-0 text-gold"><i data-lucide="map" class="w-8 h-8"></i></div>
+                    <div>
+                        <span class="font-extra text-xs text-gold font-bold uppercase tracking-widest mb-1 block">Exploration</span>
+                        <h3 class="font-heading text-2xl text-navy font-bold mb-3">Secret Waterfalls</h3>
+                        <p class="font-body text-gray-600 text-sm leading-relaxed mb-3">Avoid the tourist traps. Ask our host for the hand-drawn map to the hidden waterfalls and bathing spots that are not found on Google Maps.</p>
+                        <p class="font-body text-navy text-xs font-semibold italic">Exclusive local knowledge.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GALLERY SECTION -->
+        <section id="gallery" class="py-20 px-[5%] md:px-[10%] bg-white">
+            <div class="text-center mb-16">
+                <span class="block font-extra text-sm text-gold uppercase tracking-[0.2em] mb-3 font-bold">Moments</span>
+                <h2 class="font-heading text-4xl md:text-5xl text-navy font-semibold">Vibe of Ella</h2>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px]">
+                <div class="relative group overflow-hidden rounded-xl shadow-md row-span-2">
+                    <img src="https://images.unsplash.com/photo-1552728089-57bdde30ebd1?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Bird Watching">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
+                    <div class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span class="text-white text-xs font-extra font-bold uppercase tracking-widest flex items-center gap-2"><i data-lucide="camera" class="w-3 h-3"></i> Bird Watching</span>
+                    </div>
+                </div>
+                <div class="relative group overflow-hidden rounded-xl shadow-md row-span-1">
+                    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Morning Coffee">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
+                    <div class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span class="text-white text-xs font-extra font-bold uppercase tracking-widest flex items-center gap-2"><i data-lucide="camera" class="w-3 h-3"></i> Morning Coffee</span>
+                    </div>
+                </div>
+                <div class="relative group overflow-hidden rounded-xl shadow-md row-span-2">
+                    <img src="https://images.unsplash.com/photo-1567393528677-d6a97da16552?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Iconic Trains">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
+                    <div class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span class="text-white text-xs font-extra font-bold uppercase tracking-widest flex items-center gap-2"><i data-lucide="camera" class="w-3 h-3"></i> Iconic Trains</span>
+                    </div>
+                </div>
+                <div class="relative group overflow-hidden rounded-xl shadow-md row-span-1">
+                    <img src="https://images.unsplash.com/photo-1539635278303-d4002c07eae3?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Friendship & Travel">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
+                    <div class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span class="text-white text-xs font-extra font-bold uppercase tracking-widest flex items-center gap-2"><i data-lucide="camera" class="w-3 h-3"></i> Friendship</span>
+                    </div>
+                </div>
+                <div class="relative group overflow-hidden rounded-xl shadow-md row-span-1">
+                    <img src="https://images.unsplash.com/photo-1528183429752-a97d0bf99b5a?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Lush Greenery">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
+                    <div class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span class="text-white text-xs font-extra font-bold uppercase tracking-widest flex items-center gap-2"><i data-lucide="camera" class="w-3 h-3"></i> Greenery</span>
+                    </div>
+                </div>
+                <div class="relative group overflow-hidden rounded-xl shadow-md row-span-1">
+                    <img src="https://images.unsplash.com/photo-1517330357046-3ab5a5dd42a1?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Cozy Evenings">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
+                    <div class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span class="text-white text-xs font-extra font-bold uppercase tracking-widest flex items-center gap-2"><i data-lucide="camera" class="w-3 h-3"></i> Cozy Evenings</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REVIEWS CAROUSEL -->
+        <section id="reviews" class="py-20 px-[5%] bg-softWhite overflow-hidden select-none relative">
+            <div class="text-center mb-16">
+                <span class="block font-extra text-sm text-gold uppercase tracking-[0.2em] mb-3 font-bold">Guests Love Us</span>
+                <h2 class="font-heading text-4xl md:text-5xl text-navy font-semibold flex items-center justify-center gap-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" class="w-8 h-8 md:w-10 md:h-10" alt="Google"> 
+                    Rating 4.9/5
+                </h2>
+            </div>
+
+            <div class="max-w-4xl mx-auto relative group" id="reviewCarouselContainer">
+                <!-- Carousel Window -->
+                <div class="overflow-hidden py-10" id="reviewWindow">
+                    <div class="flex carousel-track" id="reviewTrack">
+                        <!-- JS will inject slides here -->
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <button onclick="moveSlide(-1)" class="hidden md:flex absolute top-1/2 -left-12 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg text-navy items-center justify-center hover:bg-gold hover:text-white transition-all z-10">
+                    <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                </button>
+                <button onclick="moveSlide(1)" class="hidden md:flex absolute top-1/2 -right-12 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg text-navy items-center justify-center hover:bg-gold hover:text-white transition-all z-10">
+                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                </button>
+                
+                <!-- Indicators -->
+                <div class="flex justify-center gap-3 mt-4" id="reviewIndicators">
+                    <!-- JS generated dots -->
+                </div>
+            </div>
+        </section>
+
+        <!-- LOCATION MAP -->
+        <section id="location" class="py-20 px-[5%] md:px-[10%] bg-softWhite">
+            <div class="text-center mb-16">
+                <span class="block font-extra text-sm text-gold uppercase tracking-[0.2em] mb-3 font-bold">Explore Kithalella</span>
+                <h2 class="font-heading text-4xl md:text-5xl text-navy font-semibold">Find Us Here</h2>
+            </div>
+            <div class="relative w-full h-[400px] md:h-[500px] bg-gray-200 rounded-3xl overflow-hidden shadow-xl border-8 border-white">
+                <iframe 
+                  width="100%" 
+                  height="100%" 
+                  frameBorder="0" 
+                  scrolling="no" 
+                  marginHeight="0" 
+                  marginWidth="0" 
+                  src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1887.7979610238137!2d81.0358056!3d6.8568888999999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwNTEnMjQuOCJOIDgxwrAwMicwOC45IkU!5e1!3m2!1sen!2slk!4v1770594608479!5m2!1sen!2slk"
+                  class="w-full h-full filter grayscale-[20%] hover:grayscale-0 transition-all duration-500"
+                  allowFullScreen
+                  title="Ayana Garden Location"
+                ></iframe>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-navy text-white py-16 px-[10%] text-center border-t border-white/10">
+        <div class="flex flex-col items-center justify-center mb-8 animate-fade-in">
+            <button id="footerLogo" class="relative group mb-4 cursor-pointer border-none bg-transparent p-0" type="button" aria-label="Scroll to top">
+                <div class="absolute inset-0 bg-gold rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
+                <div class="w-24 h-24 rounded-full border-4 border-white/10 shadow-2xl bg-navy flex items-center justify-center relative z-10 overflow-hidden">
+                     <img src="/images/ayana garden ella logo png.png" class="w-full h-full object-cover">
+                </div>
+            </button>
+        </div>
+
+        <div class="font-westiva text-4xl md:text-5xl mb-8 tracking-widest font-bold">Ayana Garden Bungalow</div>
+        <div class="mb-8 text-gray-400 font-body font-light flex flex-col items-center gap-2">
+            <p class="text-lg uppercase tracking-widest text-gold text-xs font-bold">Designed for Slow Travel</p>
+            <p class="text-lg">Kithalella, Ella, Sri Lanka</p>
+            <p class="text-white font-medium">+94 71 707 5724</p>
+            <p class="text-gray-500 text-sm">bookings@ayanagardenella.com</p>
+        </div>
+        <div class="flex justify-center gap-6 mb-12">
+            <a href="#" class="p-3 bg-white/5 rounded-full hover:bg-gold transition-all"><i data-lucide="instagram" class="w-6 h-6"></i></a>
+            <a href="#" class="p-3 bg-white/5 rounded-full hover:bg-gold transition-all"><i data-lucide="facebook" class="w-6 h-6"></i></a>
+        </div>
+        <div class="pt-8 border-t border-white/5 flex flex-col items-center gap-6">
+            <p class="font-extra text-[0.65rem] uppercase tracking-widest text-gray-500 opacity-60">Designed by Imaginative 369 • © 2026 Ayana Garden Bungalow</p>
+        </div>
+    </footer>
+
+    <!-- WHATSAPP FLOATING BUTTON -->
+    <a href="https://wa.me/94717075724?audio call" target="_blank" rel="noopener noreferrer" class="fixed bottom-10 right-10 w-16 h-16 bg-whatsapp text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all z-[2000] group">
+        <svg class="w-10 h-10 fill-current group-hover:rotate-12 transition-transform" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.63 1.438h.004c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </a>
+
+    <!-- BOOKING MODAL -->
+    <div id="bookingModal" class="fixed inset-0 z-[3000] hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-navy/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+        
+        <!-- Content -->
+        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+            <div class="bg-white rounded-3xl w-full max-w-6xl max-h-[90vh] overflow-hidden relative z-10 flex flex-col md:flex-row shadow-2xl animate-fade-in pointer-events-auto">
+                
+                <!-- Close Button -->
+                <button onclick="closeModal()" class="absolute top-4 right-4 z-20 bg-white/80 backdrop-blur p-2 rounded-full hover:bg-gold hover:text-white transition-all shadow-lg">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+
+                <!-- Left Side: Room Details -->
+                <div class="w-full md:w-5/12 bg-softWhite p-6 md:p-10 overflow-y-auto no-scrollbar border-r border-gray-100">
+                    <div class="relative mb-6">
+                        <img id="modalImage" src="" class="w-full h-64 md:h-72 object-cover rounded-2xl shadow-lg" alt="Room View">
+                        <div id="modalPrice" class="absolute top-4 left-4 bg-navy/90 backdrop-blur px-3 py-1 text-xs font-extra font-bold uppercase tracking-widest text-white rounded-sm shadow-md z-10">
+                            Price
+                        </div>
+                    </div>
+
+                    <!-- Image Gallery Thumbnails -->
+                    <div class="mb-6">
+                        <h4 class="font-heading text-sm text-navy mb-3 font-bold">Gallery</h4>
+                        <div id="galleryThumbnails" class="grid grid-cols-4 gap-2 max-h-32 overflow-y-auto">
+                            <!-- Thumbnails will be populated by JS -->
+                        </div>
+                    </div>
+
+                    <h3 id="modalTitle" class="font-heading text-3xl text-navy mb-2">Room Title</h3>
+                    <p class="font-extra text-xs text-gold uppercase tracking-widest font-bold mb-6 flex items-center gap-2">
+                        <i data-lucide="map-pin" class="w-4 h-4"></i> Kithalella, Ella
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-50">
+                            <h4 class="font-heading text-lg text-navy mb-2 font-bold">The Experience</h4>
+                            <p id="modalDesc" class="font-body text-gray-600 text-sm leading-relaxed">Description</p>
+                        </div>
+
+                        <div>
+                            <h4 class="font-heading text-lg text-navy mb-4 font-bold">Room Facilities</h4>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="flex items-center gap-3 text-gray-600 font-body text-xs md:text-sm bg-white p-3 rounded-lg shadow-sm border border-gray-50"><i data-lucide="wifi" class="w-4 h-4 text-whatsapp"></i> Free Wifi</div>
+                                <div class="flex items-center gap-3 text-gray-600 font-body text-xs md:text-sm bg-white p-3 rounded-lg shadow-sm border border-gray-50"><i data-lucide="coffee" class="w-4 h-4 text-whatsapp"></i> Tea/Coffee</div>
+                                <div class="flex items-center gap-3 text-gray-600 font-body text-xs md:text-sm bg-white p-3 rounded-lg shadow-sm border border-gray-50"><i data-lucide="mountain" class="w-4 h-4 text-whatsapp"></i> Best Views</div>
+                                <div class="flex items-center gap-3 text-gray-600 font-body text-xs md:text-sm bg-white p-3 rounded-lg shadow-sm border border-gray-50"><i data-lucide="wind" class="w-4 h-4 text-whatsapp"></i> Hot Water</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Booking Form -->
+                <div class="w-full md:w-7/12 bg-white p-6 md:p-10 overflow-y-auto">
+                    <div class="max-w-md mx-auto">
+                        <h3 class="font-heading text-2xl text-navy mb-1">Book Your Stay</h3>
+                        <p class="font-body text-sm text-gray-400 mb-8">Secure your reservation instantly via WhatsApp.</p>
+                        
+                        <form id="bookingForm" class="space-y-4">
+                            <input type="hidden" id="formRoomId" name="room_id">
+                            <input type="hidden" id="formRoomTitle">
+                            
+                            <div class="space-y-1">
+                                <label class="font-extra text-[0.65rem] font-bold text-gray-500 uppercase tracking-widest ml-1">Full Name</label>
+                                <input name="name" type="text" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 font-body text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all" placeholder="Enter your full name" required />
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="font-extra text-[0.65rem] font-bold text-gray-500 uppercase tracking-widest ml-1">Email</label>
+                                    <input name="email" type="email" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 font-body text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all" placeholder="name@example.com" required />
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="font-extra text-[0.65rem] font-bold text-gray-500 uppercase tracking-widest ml-1">Phone</label>
+                                    <input name="phone" type="tel" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 font-body text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all" placeholder="+94 7X XXX XXXX" required />
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="font-extra text-[0.65rem] font-bold text-gray-500 uppercase tracking-widest ml-1">Check In</label>
+                                    <input name="check_in" type="date" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 font-body text-sm text-gray-600 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all" required />
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="font-extra text-[0.65rem] font-bold text-gray-500 uppercase tracking-widest ml-1">Check Out</label>
+                                    <input name="check_out" type="date" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 font-body text-sm text-gray-600 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all" required />
+                                </div>
+                            </div>
+
+                            <div class="space-y-1">
+                                <label class="font-extra text-[0.65rem] font-bold text-gray-500 uppercase tracking-widest ml-1">Number of Guests</label>
+                                <input name="number_of_guests" type="number" min="1" max="4" value="2" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 font-body text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all" required />
+                            </div>
+
+                            <div class="space-y-1">
+                                <label class="font-extra text-[0.65rem] font-bold text-gray-500 uppercase tracking-widest ml-1">Special Requests</label>
+                                <textarea name="special_requests" rows="2" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 font-body text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all resize-none" placeholder="Dietary requirements?"></textarea>
+                            </div>
+
+                            <button id="submitBtn" type="submit" class="w-full bg-gold text-navy font-extra font-bold uppercase tracking-widest py-4 rounded-lg hover:bg-navy hover:text-white transition-all shadow-lg mt-4 transform hover:scale-[1.01]">
+                                Confirm Booking
+                            </button>
+                            <p id="formMessage" class="text-center text-sm" style="display:none;"></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <script src="/web-site/static/script.js"></script>
+    </body>
+</html>
