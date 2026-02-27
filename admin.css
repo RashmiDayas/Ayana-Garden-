@@ -1,0 +1,72 @@
+html { 
+    scroll-behavior: smooth; 
+}
+
+body { 
+    background-color: #f6f6f6; 
+}
+
+/* Hide Scrollbar but keep functionality */
+.no-scrollbar::-webkit-scrollbar { 
+    display: none; 
+}
+
+.no-scrollbar { 
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+
+/* Date Input Styling */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.6;
+    filter: invert(0.3);
+}
+
+/* Admin Panel Input Styles */
+.admin-input { 
+    background: #ffffff; 
+    color: #1f2937; 
+    border: 1px solid #e5e7eb; 
+    padding: 12px 16px; 
+    border-radius: 8px; 
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.admin-input:focus {
+    outline: none;
+    border-color: #d4af37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.admin-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* File Upload Button Styling */
+input[type="file"]::file-selector-button {
+    background: #0a192f;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 12px;
+    transition: 0.3s;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background: #d4af37;
+    color: #0a192f;
+}
