@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayana Garden CMS - Gallery</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Consistent Color Palette */
+            --sidebar-bg: #1e293b; 
+            --sidebar-text: #94a3b8;
+            --sidebar-active: #ffffff;
+            --sidebar-active-bg: #334155;
+            --accent-color: #3b82f6; 
+            --bg-body: #f1f5f9; 
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --border-color: #e2e8f0;
+            --danger-color: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            display: flex;
+            min-height: 100vh;
+            color: var(--text-main);
+        }
+
+        /* --- Sidebar Styles --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            color: var(--sidebar-text);
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-list {
+            list-style: none;
+            padding: 20px 0;
+            flex: 1;
+        }
+
+        .nav-item {
+            padding: 12px 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .nav-item:hover {
+            color: white;
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .nav-item.active {
+            color: white;
+            background-color: var(--sidebar-active-bg);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* --- Main Content Area --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background-color: white;
+            height: 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .page-heading {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel {
+            background-color: transparent;
+            color: #64748b;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-cancel:hover {
+            background-color: #f8fafc;
+            color: #334155;
+        }
+
+        .btn-save {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-save:hover {
+            background-color: #2563eb;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Content Container */
+        .content-container {
+            padding: 40px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .section-header {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* --- Gallery Grid Styles --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .gallery-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+        }
+
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background-color: #f1f5f9;
+            overflow: hidden;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .image-wrapper:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Delete Button overlay (similar to screenshot 'Iconic Trains') */
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: white;
+            color: var(--danger-color);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            opacity: 0; /* Hidden by default, shown on hover or if active */
+            transition: opacity 0.2s;
+        }
+
+        .image-wrapper:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* Upload Control in Card */
+        .upload-control {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .custom-file-upload {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #475569;
+            transition: all 0.2s;
+            width: fit-content;
+        }
+
+        .custom-file-upload:hover {
+            background-color: #e2e8f0;
+            border-color: #94a3b8;
+        }
+
+        .file-name-display {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background-color: #1e293b;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast i {
+            color: #22c55e;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .content-container { padding: 20px; }
+            .top-bar { padding: 0 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-hotel"></i> Ayana Garden CMS
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <span class="nav-icon"><i class="fas fa-home"></i></span> Dashboard
+            </li>
+            <li class="nav-item">
+                <span class="nav-icon"><i class="fas fa-cog"></i></span> General / Footer
+            </li>
+            <li class="nav-item">
+                <span class="nav-icon"><i class="fas fa-image"></i></span> Hero Section
+            </li>
+            <!-- Gallery is Active -->
+            <li class="nav-item active">
+                <span class="nav-icon"><i class="fas fa-images"></i></span> Gallery
+            </li>
+            <li class="nav-item">
+                <span class="nav-icon"><i class="fas fa-bed"></i></span> Rooms
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <!-- Top Header Bar -->
+        <header class="top-bar">
+            <div class="page-heading">EDITING: GALLERY</div>
+            <div class="action-buttons">
+                <button class="btn btn-cancel" onclick="resetGallery()">Cancel</button>
+                <button class="btn btn-save" onclick="saveGallery()">Save Changes</button>
+            </div>
+        </header>
+
+        <!-- Gallery Content -->
+        <div class="content-container">
+            <div class="section-header">
+                <h2 class="section-title">Gallery</h2>
+            </div>
+
+            <div class="gallery-grid">
+                
+                <!-- Card 1: Bird Watching -->
+                <div class="gallery-card">
+                    <div class="image-wrapper">
+                        <img id="img-1" src="https://picsum.photos/seed/bird/400/300" alt="Bird Watching">
+                        <button class="delete-btn" title="Remove Image" onclick="removeImage('img-1')">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Bird Watching</h3>
+                        <div class="upload-control">
+                            <label for="input-1" class="custom-file-upload">
+                                <i class="fas fa-cloud-upload-alt"></i> Choose File
+                            </label>
+                            <input type="file" id="input-1" class="file-input" accept="image/*" onchange="updatePreview(this, 'img-1', 'label-1')">
+                            <span id="label-1" class="file-name-display">No file chosen</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Morning Coffee -->
+                <div class="gallery-card">
+                    <div class="image-wrapper">
+                        <img id="img-2" src="https://picsum.photos/seed/coffee/400/300" alt="Morning Coffee">
+                        <button class="delete-btn" title="Remove Image" onclick="removeImage('img-2')">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Morning Coffee</h3>
+                        <div class="upload-control">
+                            <label for="input-2" class="custom-file-upload">
+                                <i class="fas fa-cloud-upload-alt"></i> Choose File
+                            </label>
+                            <input type="file" id="input-2" class="file-input" accept="image/*" onchange="updatePreview(this, 'img-2', 'label-2')">
+                            <span id="label-2" class="file-name-display">No file chosen</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Iconic Trains -->
+                <div class="gallery-card">
+                    <div class="image-wrapper">
+                        <img id="img-3" src="https://picsum.photos/seed/train/400/300" alt="Iconic Trains">
+                        <!-- Showing delete button permanently for demo if needed, or on hover -->
+                        <button class="delete-btn" title="Remove Image" onclick="removeImage('img-3')">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Iconic Trains</h3>
+                        <div class="upload-control">
+                            <label for="input-3" class="custom-file-upload">
+                                <i class="fas fa-cloud-upload-alt"></i> Choose File
+                            </label>
+                            <input type="file" id="input-3" class="file-input" accept="image/*" onchange="updatePreview(this, 'img-3', 'label-3')">
+                            <span id="label-3" class="file-name-display">No file chosen</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: Friendship -->
+                <div class="gallery-card">
+                    <div class="image-wrapper">
+                        <img id="img-4" src="https://picsum.photos/seed/people/400/300" alt="Friendship">
+                        <button class="delete-btn" title="Remove Image" onclick="removeImage('img-4')">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Friendship</h3>
+                        <div class="upload-control">
+                            <label for="input-4" class="custom-file-upload">
+                                <i class="fas fa-cloud-upload-alt"></i> Choose File
+                            </label>
+                            <input type="file" id="input-4" class="file-input" accept="image/*" onchange="updatePreview(this, 'img-4', 'label-4')">
+                            <span id="label-4" class="file-name-display">No file chosen</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span>Gallery updated successfully!</span>
+    </div>
+
+    <script>
+        // Function to handle image preview for a specific card
+        function updatePreview(input, imgId, labelId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    document.getElementById(imgId).src = e.target.result;
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+                
+                // Update "No file chosen" text to the actual filename
+                document.getElementById(labelId).textContent = input.files[0].name;
+                document.getElementById(labelId).style.color = "#0f172a"; // Darker color when file selected
+            }
+        }
+
+        // Function to simulate removing an image
+        function removeImage(imgId) {
+            if(confirm("Are you sure you want to delete this image?")) {
+                // Reset to a placeholder or empty
+                document.getElementById(imgId).src = "https://via.placeholder.com/400x300?text=No+Image";
+                showToast("Image removed.");
+            }
+        }
+
+        // Simulate Saving
+        function saveGallery() {
+            const btn = document.querySelector('.btn-save');
+            const originalText = btn.innerText;
+            
+            btn.innerText = 'Saving...';
+            btn.style.opacity = '0.7';
+
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.opacity = '1';
+                showToast("Gallery updated successfully!");
+            }, 800);
+        }
+
+        // Simulate Cancel
+        function resetGallery() {
+            if(confirm("Discard all unsaved changes to the gallery?")) {
+                // Reload page to reset (simplest way for this demo)
+                location.reload();
+            }
+        }
+
+        // Toast Helper
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.querySelector('span').innerText = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Navigation Logic (for demo purposes)
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

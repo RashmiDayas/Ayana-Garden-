@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayana Garden CMS - General Settings</title>
+    <!-- Google Fonts: Inter for a clean, modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Color Palette matching the screenshot */
+            --sidebar-bg: #1e293b; /* Dark Blue/Slate */
+            --sidebar-text: #94a3b8; /* Light Grey */
+            --sidebar-active: #ffffff; /* White text for active */
+            --sidebar-active-bg: #334155; /* Slightly lighter slate for active bg */
+            --accent-color: #3b82f6; /* Bright Blue for buttons/highlights */
+            --bg-body: #f1f5f9; /* Light Grey Background */
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            display: flex;
+            min-height: 100vh;
+            color: var(--text-main);
+        }
+
+        /* --- Sidebar Styles --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            color: var(--sidebar-text);
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-list {
+            list-style: none;
+            padding: 20px 0;
+            flex: 1;
+        }
+
+        .nav-item {
+            padding: 12px 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .nav-item:hover {
+            color: white;
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .nav-item.active {
+            color: white;
+            background-color: var(--sidebar-active-bg);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* --- Main Content Area --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Bar (Header) */
+        .top-bar {
+            background-color: white;
+            height: 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .page-heading {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel {
+            background-color: transparent;
+            color: #64748b;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-cancel:hover {
+            background-color: #f8fafc;
+            color: #334155;
+        }
+
+        .btn-save {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-save:hover {
+            background-color: #2563eb;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Content Container */
+        .content-container {
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 32px;
+        }
+
+        .card-header {
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        /* Form Elements */
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .input-field, .textarea-field {
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: var(--text-main);
+            width: 100%;
+            transition: border-color 0.2s;
+        }
+
+        .input-field:focus, .textarea-field:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .textarea-field {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* Logo Upload Area */
+        .logo-upload-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .logo-preview {
+            width: 80px;
+            height: 80px;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            border: 2px dashed #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: #94a3b8;
+        }
+
+        .logo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .upload-btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .custom-file-upload {
+            display: inline-block;
+            padding: 8px 16px;
+            cursor: pointer;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            color: var(--text-main);
+            transition: all 0.2s;
+        }
+
+        .custom-file-upload:hover {
+            background-color: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        .upload-helper-text {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background-color: #1e293b;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast i {
+            color: #22c55e;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none; /* Hide sidebar on mobile for simplicity */
+            }
+            .content-container {
+                padding: 20px;
+            }
+            .top-bar {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-hotel"></i> Ayana Garden CMS
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <span class="nav-icon"><i class="fas fa-home"></i></span> Dashboard
+            </li>
+            <li class="nav-item active">
+                <span class="nav-icon"><i class="fas fa-cog"></i></span> General / Footer
+            </li>
+            <li class="nav-item">
+                <span class="nav-icon"><i class="fas fa-image"></i></span> Hero Section
+            </li>
+            <li class="nav-item">
+                <span class="nav-icon"><i class="fas fa-images"></i></span> Gallery
+            </li>
+            <li class="nav-item">
+                <span class="nav-icon"><i class="fas fa-bed"></i></span> Rooms
+            </li>
+            <li class="nav-item">
+                <span class="nav-icon"><i class="fas fa-envelope"></i></span> Bookings
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <!-- Top Header Bar -->
+        <header class="top-bar">
+            <div class="page-heading">General Settings</div>
+            <div class="action-buttons">
+                <button class="btn btn-cancel" onclick="resetForm()">Cancel</button>
+                <button class="btn btn-save" onclick="saveSettings()">Save Changes</button>
+            </div>
+        </header>
+
+        <!-- Settings Content -->
+        <div class="content-container">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">General Settings</h2>
+                </div>
+
+                <form id="settingsForm" onsubmit="event.preventDefault(); saveSettings();">
+                    <div class="form-section">
+                        
+                        <!-- Logo Upload Section -->
+                        <div class="form-group">
+                            <label class="label">Site Logo</label>
+                            <div class="logo-upload-wrapper">
+                                <div class="logo-preview">
+                                    <img id="logoImage" src="https://picsum.photos/seed/ayana/200/200" alt="Logo Preview">
+                                </div>
+                                <div class="upload-btn-group">
+                                    <label for="logoInput" class="custom-file-upload">
+                                        <i class="fas fa-upload"></i> Choose File
+                                    </label>
+                                    <input type="file" id="logoInput" class="file-input" accept="image/*" onchange="previewImage(event)">
+                                    <span class="upload-helper-text" id="fileName">No file chosen</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Site Name -->
+                        <div class="form-group">
+                            <label for="siteName" class="label">Site Name</label>
+                            <input type="text" id="siteName" class="input-field" value="Ayana Garden Bungalow">
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="form-group">
+                            <label for="phone" class="label">Phone</label>
+                            <input type="text" id="phone" class="input-field" value="+94 71 707 5724">
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="email" class="label">Email</label>
+                            <input type="email" id="email" class="input-field" value="bookings@ayanagardenella.com">
+                        </div>
+
+                        <!-- Address -->
+                        <div class="form-group">
+                            <label for="address" class="label">Address</label>
+                            <textarea id="address" class="textarea-field">Kithalella, Ella, Sri Lanka</textarea>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification Element -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span>Settings saved successfully!</span>
+    </div>
+
+    <script>
+        // Function to preview image when file is selected
+        function previewImage(event) {
+            const input = event.target;
+            const preview = document.getElementById('logoImage');
+            const fileNameLabel = document.getElementById('fileName');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                }
+
+                reader.readAsDataURL(input.files[0]);
+                fileNameLabel.textContent = input.files[0].name;
+            }
+        }
+
+        // Function to Save Settings (Simulated)
+        function saveSettings() {
+            // Gather data (optional, for console logging)
+            const data = {
+                siteName: document.getElementById('siteName').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                address: document.getElementById('address').value
+            };
+
+            console.log('Saving settings:', data);
+
+            // Show Success Toast
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+
+            // Hide Toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Function to Reset Form
+        function resetForm() {
+            if(confirm("Are you sure you want to cancel? Unsaved changes will be lost.")) {
+                document.getElementById('settingsForm').reset();
+                document.getElementById('logoImage').src = "https://picsum.photos/seed/ayana/200/200";
+                document.getElementById('fileName').textContent = "No file chosen";
+            }
+        }
+
+        // Add simple click effect for navigation items
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
